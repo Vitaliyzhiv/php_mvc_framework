@@ -1,2 +1,9 @@
 /vendor
 bootstrap-5.3.3-dist.zip
+/public/assets/bootstrap/css/*
+!/public/assets/bootstrap/css/bootstrap.min.css
+/public/assets/bootstrap/js/*
+!/public/assets/bootstrap/js/bootstrap.bundle.min.js
+/public/lang/*
+!/public/lang/ru.php
+!/public/lang/uk.php
