@@ -1,0 +1,5 @@
+1.vlucas/valitron https://packagist.org/packages/vlucas/valitron
+
+Valitron is a simple, minimal and elegant stand-alone validation library with NO dependencies. Valitron uses simple, straightforward validation methods with a focus on readable and concise syntax. Valitron is the simple and pragmatic validation library you've been looking for.
+
+2. 
