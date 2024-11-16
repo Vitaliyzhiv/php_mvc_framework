@@ -57,7 +57,6 @@ class View
             abort("Not found layout {$layout_file}", 500);
         }
 
-        return '';
     }
 
     // метод для рендеринга частей (элементов страницы)
