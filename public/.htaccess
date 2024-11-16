@@ -1,5 +1,10 @@
 RewriteEngine On
 
+# Allow encoded characters in URLs
+RewriteCond %{THE_REQUEST} "^[A-Z]{3,}\s(/[^\s]*)?\sHTTP" [NC]
+
+# Skip rewriting if the requested file exists
 RewriteCond %{REQUEST_FILENAME} !-f
 
+# Redirect everything else to index.php
 RewriteRule ^(.*)$ index.php?$1 [L,QSA]
