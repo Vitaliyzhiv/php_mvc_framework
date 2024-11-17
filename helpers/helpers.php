@@ -133,4 +133,31 @@ function h($str): string
     return htmlspecialchars($str, ENT_QUOTES);
 }
 
-// функция для получения массива сессии
+/**
+ * Returns a string containing a hidden HTML form field with the name
+ * "csrf_token" and a value of the current CSRF token from the session.
+ *
+ * This is useful for including in forms that need to be protected from
+ * cross-site request forgery (CSRF) attacks.
+ *
+ * @return string A string containing a hidden HTML form field with the
+ *     CSRF token.
+ */
+function get_csrf_field() :string {
+    return '<input type="hidden" name="csrf_token" value="' . session()->get('csrf_token') . '" />';
+}
+
+/**
+ * Returns a string containing a meta HTML tag with the name "csrf-token"
+ * and a content attribute set to the current CSRF token from the session.
+ *
+ * This is useful for including in HTML pages where you need to protect
+ * against cross-site request forgery (CSRF) by making the token accessible
+ * in JavaScript.
+ *
+ * @return string A string containing a meta HTML tag with the CSRF token.
+ */
+function get_csrf_meta() :string {
+    // Retrieve the CSRF token from the session and insert it into a meta tag
+    return '<meta name="csrf-token" content="' . session()->get('csrf_token') . '" />';
+}
