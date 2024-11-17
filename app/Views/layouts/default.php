@@ -3,6 +3,8 @@
 
 <head>
     <meta charset="UTF-8">
+    <!-- мета поле для csrf токена -->
+    <?= get_csrf_meta(); ?>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PHP FRAMEWORK :: <?= $title ?? '' ?></title>
     <link rel="stylesheet" href="<?= base_url('/assets/bootstrap/css/bootstrap.min.css'); ?>">
