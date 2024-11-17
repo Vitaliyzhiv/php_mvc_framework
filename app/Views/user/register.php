@@ -2,13 +2,17 @@
 
     <h1><?= $title ?? ''; ?></h1>
 
-    <!-- Проверка были ли записаны ошибки в сессию и были ли записаны данные в сессию -->
+    <!-- дамп csrf_token-->
+    <?php //dump(session()->get('csrf_token')); 
+    ?>
 
     <div class="row">
         <div class="col-md-6 offset-md-3">
 
             <form action="<?= base_url('/register'); ?>" method="post">
 
+                <!-- вызываем функцию helper getCsrfField  для добавления поля csrf_token -->
+                <?= get_csrf_field(); ?>
                 <!-- name -->
                 <div class="mb-3">
                     <label for="name" class="form-label">Name </label>
