@@ -2,6 +2,9 @@
 
 namespace PHPFramework;
 
+// Import recomended namespace for db connect creation
+use Illuminate\Database\Capsule\Manager as Capsule;
+
 class Application
 {
 
@@ -24,6 +27,7 @@ class Application
         $this->view = new View(LAYOUT);
         $this->session = new Session();
         $this->generateCsrfToken();
+        $this->setDbConnection();
     }
 
     public function run(): void
@@ -45,4 +49,13 @@ class Application
             session()->set('csrf_token', $csrfToken);
         }
     }
+
+
+    public function setDbConnection(){
+        $capsule = new Capsule();
+        $capsule->addConnection(DB_SETTINGS);
+        $capsule->setAsGlobal();
+        $capsule->bootEloquent();
+    }
 }
+
