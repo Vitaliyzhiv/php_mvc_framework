@@ -2,14 +2,18 @@
 
 namespace PHPFramework;
 
+use \Illuminate\Database\Eloquent\Model as EloquentModel;
 use Valitron\Validator;
 
-class Model
+abstract class Model extends EloquentModel
 {
-    // создаем изначально пустой массив для того какие именно поля из формы мы хотим обрабатывать
-    protected array $fillable = [];
+
+    // массив для хранения данных из формы 
+    protected array $loaded = [];
+    // создаем изначально пустой массив для того какие именно поля из формы мы хотим сохранять в бд
+    protected  $fillable = [];
     // создаем массив атрибутов, которые мы будем принимать на основе $fillable
-    public array $attributes = [];
+    public  $attributes = [];
     // создаем защищенный массив для правил
     protected array $rules = [];
 
@@ -19,12 +23,28 @@ class Model
     // массив для перевода названий полей
     protected array $labels = [];
 
+
+    // переопределение метода save из класса EloquentModel
+    public function save(array $options = [])
+    {
+
+        // проходимся циклом по атрибутам 
+        foreach ($this->attributes as $key => $value) {
+            // проверяем существует ли такое поле в $fillable
+            if (!in_array($key, $this->fillable)) {
+                // если нет, удаляем его из массива $attributes
+                unset($this->attributes[$key]);
+            }
+        }
+        return parent::save($options);
+    }
+
     public function loadData()
     {
         // используя функцию helper request и ее метод getData получаем данные
         $data =  request()->getData();
         // проходимся циклом по массиву $fillable и отбираем только нужные данные
-        foreach ($this->fillable as $field) {
+        foreach ($this->loaded as $field) {
             // проверяем существует ли такой ключ в массиве $data
             if (isset($data[$field])) {
                 // если существует, добавляем его в массив $attributes
@@ -36,7 +56,8 @@ class Model
     }
 
     // создаем функцию для валидации 
-    public function validate($data = [], $rules = [], $labels = []): bool {
+    public function validate($data = [], $rules = [], $labels = []): bool
+    {
         // проверяем передавались ли данные
         if (!$data) {
             // возвращаем аттрибуты модели
@@ -71,7 +92,8 @@ class Model
     }
 
     // создаем функцию для получения ошибок
-    public function getErrors(): array {
+    public function getErrors(): array
+    {
         return $this->errors;
     }
 }
