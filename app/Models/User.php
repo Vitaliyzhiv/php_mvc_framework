@@ -7,8 +7,17 @@ use PHPFramework\Model;
 class User extends Model
 {
 
-    // заполняем поля $fillable и вставляем поля которые мы ожидаем из формы
-    protected array $fillable = ['name', 'email', 'password', 'confirmPassword'];
+    // указываем, что модель должна использовать таблицу users
+    protected $table = 'users';
+    
+    // указываем, что модель не должна использовать timestamps
+    public $timestamps = false;
+
+    // указываем даннные которые модель должна принять в $loaded 
+    protected array $loaded = ['name', 'email', 'password', 'confirmPassword'];
+
+    // в $fillable указываем поля которые мы хотим сохранить в бд
+    protected  $fillable = ['name', 'email', 'password'];
 
     // обьявляем правила
     protected array $rules = [
@@ -16,6 +25,12 @@ class User extends Model
         'email' => ['email'],
         'lengthMin' => [
             ['password', 6]
+        ],
+        'lengthMax' => [
+            ['name', 120],
+            ['email', 120],
+            ['password', 255],
+            ['confirmPassword', 255]
         ],
         'equals' => [
             ['password', 'confirmPassword']
