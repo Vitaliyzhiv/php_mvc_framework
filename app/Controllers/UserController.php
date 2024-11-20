@@ -3,7 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\User;
-use Illuminate\Database\Capsule\Manager as Capsule;
+// use Illuminate\Database\Capsule\Manager as Capsule;
 
 class UserController extends BaseController
 {
@@ -11,7 +11,6 @@ class UserController extends BaseController
     // функция которая возвращает страницу регистрации
     public function register()
     {
-       
         // возвращаем вид с помощью функции helper view
         return view('user/register', [
             // передаем в вид данные для формы регистрации
@@ -37,18 +36,12 @@ class UserController extends BaseController
             // устанавливаем данные формы в сессию
             session()->set('form_data', $model->attributes);
         } else {
-
-            // сохраняем данные в БД с помощью метода create
-            // User::query()->create([
-            //     'name' => $model->attributes['name'],
-            //     'email' => $model->attributes['email'],
-            //     'password' => $model->attributes['password'],
-            // ]);
-
-            // сохраняем данные с помошью метода save
+            // хешируем пароль перед вставкой в таблицу
+            $model->attributes['password'] = password_hash($model->attributes['password'], PASSWORD_DEFAULT);
+            // сохраняем данные с помошью метода save библиотеки Illuminate
             // Проверяем статус сохранения данных
-            if ($model->save()) {
-                session()->setFlash('success', 'Thank you for registration');
+            if ($id = $model->save()) {
+                session()->setFlash('success', 'Thank you for registration. Your id is ' . $id);
             } else {
                 session()->setFlash('error', 'Error Registration');
             }
@@ -56,11 +49,6 @@ class UserController extends BaseController
 
         //  делаем редирект на нужную страницу
         response()->redirect('/register');
-        // dump($model->attributes);
-        // dump($model->validate());
-        // dump($model->getErrors());
-        // // получаем данные из формы
-        // dd($_POST);
     }
 
     // Страница которая возвращает функцию логина
