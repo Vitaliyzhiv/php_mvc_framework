@@ -2,18 +2,23 @@
 
 namespace PHPFramework;
 
-use \Illuminate\Database\Eloquent\Model as EloquentModel;
+// use \Illuminate\Database\Eloquent\Model as EloquentModel;
 use Valitron\Validator;
 
-abstract class Model extends EloquentModel
+abstract class Model 
 {
 
+
+    // защищенное свойство $table в которое из наследуемых классов модели Model 
+    // мы будем передавать название таблицы
+    protected string $table;
     // массив для хранения данных из формы 
     protected array $loaded = [];
+    
     // создаем изначально пустой массив для того какие именно поля из формы мы хотим сохранять в бд
-    protected  $fillable = [];
+    protected array $fillable = [];
     // создаем массив атрибутов, которые мы будем принимать на основе $fillable
-    public  $attributes = [];
+    public array $attributes = [];
     // создаем защищенный массив для правил
     protected array $rules = [];
 
@@ -25,7 +30,7 @@ abstract class Model extends EloquentModel
 
 
     // переопределение метода save из класса EloquentModel
-    public function save(array $options = [])
+    public function save(): false|string
     {
 
         // проходимся циклом по атрибутам 
@@ -36,7 +41,24 @@ abstract class Model extends EloquentModel
                 unset($this->attributes[$key]);
             }
         }
-        return parent::save($options);
+        // вставляем данные в таблицу c позиционными аргументами $tbl (f1, f2, f3 ...) values(?,?,?...)
+        // Так же можем вставить данные с именнованными аргументами 
+        // $tbl (f1, f2, f3 ...)  values(:f1, :f2, :f3)
+        // С помощью функции array map формируем массив имен полей, обернутых в обратные кавычки (`)
+        $fields = array_map(fn($field) => "`{$field}`", $this->fillable);
+        // с помощью функции implode превращаем массив $fields в строку
+        $fields = implode(', ', $fields);
+        // С помощью функции array map формируем массив плейсхолдеров полей, обернутых в обратные кавычки (`)
+        $placeholders = array_map(fn($field) => ":{$field}", $this->fillable);
+        // применяем implode так же и к массиву с именоваными параметрами
+        $placeholders = implode(', ', $placeholders);
+
+        // подготавливаем запрос на сохранение данных в таблицу
+        $query = ("insert into {$this->table} ({$fields}) values ({$placeholders})");
+        // выполняем запрос
+        db()->query($query, $this->attributes);
+        // возвращаем id вставленной записи
+        return db()->getInsertId();
     }
 
     public function loadData()
