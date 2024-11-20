@@ -27,6 +27,7 @@ class Database
             abort('Database connection error', 500);
         }
         return $this;
+        
     }
 
     // функция для подготовки и выполнения запроса к базе данных.
