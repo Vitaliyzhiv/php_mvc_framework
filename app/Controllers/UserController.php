@@ -11,10 +11,7 @@ class UserController extends BaseController
     // функция которая возвращает страницу регистрации
     public function register()
     {
-
-
-
-        // dump($users);
+       
         // возвращаем вид с помощью функции helper view
         return view('user/register', [
             // передаем в вид данные для формы регистрации
@@ -47,16 +44,14 @@ class UserController extends BaseController
             //     'email' => $model->attributes['email'],
             //     'password' => $model->attributes['password'],
             // ]);
-            
+
             // сохраняем данные с помошью метода save
             // Проверяем статус сохранения данных
-            if ( $model->save() ) {
+            if ($model->save()) {
                 session()->setFlash('success', 'Thank you for registration');
             } else {
                 session()->setFlash('error', 'Error Registration');
             }
-
-
         }
 
         //  делаем редирект на нужную страницу
