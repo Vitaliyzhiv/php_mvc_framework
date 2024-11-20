@@ -2,8 +2,6 @@
 
 namespace App\Models;
 
-
-use Illuminate\Database\Eloquent\Relations\HasMany; 
 use PHPFramework\Model;
 
 
@@ -11,16 +9,16 @@ class User extends Model
 {
 
     // указываем, что модель должна использовать таблицу users
-    protected $table = 'users';
+    protected string $table = 'users';
     
     // указываем, что модель не должна использовать timestamps
-    public $timestamps = false;
+    public bool $timestamps = false;
 
     // указываем даннные которые модель должна принять в $loaded 
     protected array $loaded = ['name', 'email', 'password', 'confirmPassword'];
 
     // в $fillable указываем поля которые мы хотим сохранить в бд
-    protected  $fillable = ['name', 'email', 'password'];
+    protected array $fillable = ['name', 'email', 'password'];
 
     // обьявляем правила
     protected array $rules = [
@@ -48,10 +46,5 @@ class User extends Model
         'confirmPassword' => 'Подтверждение пароля'
     ];
 
-    // связывание модели User с моделью Phone
-    public function phones(): HasMany
-    {
-        // возвращаем ссылку на класс для связи данных
-        return $this->hasMany(Phone::class);
-    }
+
 }
