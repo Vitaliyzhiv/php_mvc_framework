@@ -11,7 +11,7 @@ const CORE = ROOT . '/core';
 const VIEWS = APP . '/Views';
 const LAYOUT = 'default';
 const PATH = 'http://localhost';
-
+const DEBUG = 0;
 const ERROR_LOGS = ROOT . '/tmp/error.log';
 
 
