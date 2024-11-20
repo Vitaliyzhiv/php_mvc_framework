@@ -133,6 +133,11 @@ function h($str): string
     return htmlspecialchars($str, ENT_QUOTES);
 }
 
+// функция helper для сокращенного обращения к обьекту db
+function db(): \PHPFramework\Database {
+    return app()->db;
+}
+
 /**
  * Returns a string containing a hidden HTML form field with the name
  * "csrf_token" and a value of the current CSRF token from the session.
