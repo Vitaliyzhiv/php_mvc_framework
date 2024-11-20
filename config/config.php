@@ -14,6 +14,7 @@ const PATH = 'http://localhost';
 
 const ERROR_LOGS = ROOT . '/tmp/error.log';
 
+
 const DB_SETTINGS = [
     'driver' => 'mysql',
     'host' => 'localhost',
