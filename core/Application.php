@@ -14,6 +14,8 @@ class Application
     public Router $router;
     public View $view;
     public Session $session;
+    // экземпляр класса Database
+    public Database $db;
 
     public static Application $app;
 
@@ -27,7 +29,10 @@ class Application
         $this->view = new View(LAYOUT);
         $this->session = new Session();
         $this->generateCsrfToken();
-        $this->setDbConnection();
+        // подключение к бд с помощью библиотеки Illuminate(Laravel)
+        // $this->setDbConnection();
+        // подключение к бд с помощью  нашего класса с бд
+        $this->db = new Database();
     }
 
     public function run(): void

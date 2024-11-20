@@ -12,6 +12,8 @@ const VIEWS = APP . '/Views';
 const LAYOUT = 'default';
 const PATH = 'http://localhost';
 
+const ERROR_LOGS = ROOT . '/tmp/error.log';
+
 const DB_SETTINGS = [
     'driver' => 'mysql',
     'host' => 'localhost',
@@ -22,4 +24,10 @@ const DB_SETTINGS = [
     'collation' => 'utf8mb4_unicode_ci',
     'port' => 3306,
     'prefix' => '',
+    'options' => [
+        // включаем режим отладки 
+        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+        // используем ассоциативные массивы
+        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+    ]
 ];

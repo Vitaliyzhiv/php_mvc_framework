@@ -1,0 +1,11 @@
+### English:
+
+**CSRF Token** (Cross-Site Request Forgery Token) is a security feature used to prevent unauthorized actions on a website. It protects against malicious attempts to perform unwanted actions on behalf of an authenticated user, such as changing account settings or making transactions, without the user's consent. The token is unique and associated with each session, and it is included in forms and requests to verify that the request is coming from a legitimate source, not from a malicious attacker.
+
+### Russian:
+
+**CSRF Токен** (Токен защиты от подделки межсайтовых запросов) — это элемент безопасности, предназначенный для предотвращения несанкционированных действий на веб-сайте. Он защищает от попыток злоумышленников выполнить нежелательные действия от имени авторизованного пользователя, например, изменить настройки аккаунта или совершить транзакции без ведома пользователя. Токен уникален для каждой сессии и используется в формах и запросах для проверки, что запрос поступает от законного источника, а не от злоумышленника.
+
+### Ukrainian:
+
+**CSRF Токен** (Токен захисту від підробки міжсайтових запитів) — це елемент безпеки, що запобігає несанкціонованим діям на вебсайті. Він захищає від спроб зловмисників виконати небажані дії від імені авторизованого користувача, наприклад, змінити налаштування акаунта або здійснити транзакції без відома користувача. Токен унікальний для кожної сесії та використовується у формах і запитах для перевірки, що запит надходить від легітимного джерела, а не від зловмисника.
