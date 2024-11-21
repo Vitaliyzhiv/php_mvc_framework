@@ -4,18 +4,11 @@ namespace PHPFramework;
 
 class Router
 {
-    //    protected Request $request;
-    //    protected Response $response;
 
     protected array $routes = [];
     protected array $route_params = [];
 
-    /*public function __construct(Request $request, Response $response)
-    {
-        $this->request = $request;
-        $this->response = $response;
-    }*/
-
+    // вариант после пхп 8, с передачей объектов других классов прямо в конструктор
     public function __construct(
         protected Request $request,
         protected Response $response
@@ -33,7 +26,7 @@ class Router
         $this->routes[] = [
             'path' => "/$path",
             'callback' => $callback,
-            'middleware' => null,
+            'middleware' => [],
             'method' => $method,
             'needCsrfToken' => true,
         ];
@@ -83,7 +76,7 @@ class Router
 
                 if (request()->isPost()) {
                     // если запрос требует csrf токена и метод проверки токена не прошел, то возвращаем ошибку
-                    if ($route['needCsrfToken'] && !$this->checkCsrfToken()) { 
+                    if ($route['needCsrfToken'] && !$this->checkCsrfToken()) {
 
                         // если данные были обработанны ajax запросом то возвращаем ошибку с помощью json_encode
                         if (request()->isAjax()) {
@@ -93,22 +86,34 @@ class Router
                             ]);
                             die;
                         } else {
-                            // // устанавливаем flash сообщение об ошибке
-                            // session()->setFlash('error', 'Ошибка безопасности');
-                            // // делаем редирект на текущую страницу
-                            // response()->redirect();
-
                             //  другой вариант делать abort 419 как в ларавель
                             abort("Ошибка безопасности", 419);
                         }
+                    }
+                }
+
+                // проверяем не является ли пустым  middleware для маршрута
+                if ($route['middleware']) {
+                    // проходим по всем middleware и вызываем их
+                    foreach ($route['middleware'] as $item) {
+                        // проверяем есть ли middleware в константе
+                        $middleware = MIDDLEWARE[$item] ?? false;
+                        if ($middleware) {
+                            // создаем экземпяр класса
+                            $middlewareInstance = new $middleware;
+                            // вызываем метод handle в данного экземпляра класса
+                            $middlewareInstance->handle();
+                         }
+
 
                     }
                 }
-                    foreach ($matches as $k => $v) {
-                        if (is_string($k)) {
-                            $this->route_params[$k] = $v;
-                        }
+                if ($route)
+                foreach ($matches as $k => $v) {
+                    if (is_string($k)) {
+                        $this->route_params[$k] = $v;
                     }
+                }
                 return $route;
             }
         }
@@ -123,7 +128,8 @@ class Router
      *
      * @return self
      */
-    public function withoutCsrfToken():self {
+    public function withoutCsrfToken(): self
+    {
         $lastRouteKey = array_key_last($this->routes);
         $this->routes[$lastRouteKey]['needCsrfToken'] = false;
         return $this;
@@ -154,4 +160,24 @@ class Router
         return true;
     }
 
+
+    /**
+     * Adds middleware to the last added route.
+     *
+     * This method allows you to add middleware to the last route that was added
+     * to the router. This can be useful if you want to add middleware to a specific
+     * route and not to all routes.
+     *
+     * The middleware is specified as an array of strings, each string being the
+     * name of a class that implements the MiddlewareInterface.
+     *
+     * @param array $middleware
+     * @return $this
+     */
+    public function middleware(array $middleware): self
+    {
+        $lastRouteKey = array_key_last($this->routes);
+        $this->routes[$lastRouteKey]['middleware'] = $middleware;
+        return $this;
+    }
 }
