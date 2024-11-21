@@ -26,7 +26,6 @@ class Database
             error_log("[" . date('Y-m-d H:i:s') . "] DB ERROR: . {$e->getMessage()}" . PHP_EOL, 3, ERROR_LOGS);
             abort('Database connection error', 500);
         }
-        return $this;
         
     }
 
