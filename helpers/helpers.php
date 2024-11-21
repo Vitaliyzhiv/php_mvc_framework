@@ -166,3 +166,7 @@ function get_csrf_meta() :string {
     // Retrieve the CSRF token from the session and insert it into a meta tag
     return '<meta name="csrf-token" content="' . session()->get('csrf_token') . '" />';
 }
+
+function check_auth() :bool {
+    return false;
+}
