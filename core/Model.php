@@ -76,7 +76,7 @@ abstract class Model
             }
         }
     }
-
+    
     // создаем функцию для валидации 
     public function validate($data = [], $rules = [], $labels = []): bool
     {
@@ -93,6 +93,33 @@ abstract class Model
         if (!$labels) {
             $labels = $this->labels;
         }
+
+        Validator::addRule('unique', function($field, $value, array $params, array $fields) {
+            // разбиваем по запятой с помощью explode для получения отдельно названия таблицы и поля
+            $data = explode(',', $params[0]);
+            // dd($field, $value, $params, $data);
+
+            // Вариант 1: расширенный вариант 
+            // с помощью функции findOne из класса Database получаем одну запись из БД
+            // $user = db()->findOne($data[0], $value, $data[1]);
+
+            // // так как в случае отсутсвия данных в БД, функция  findOne вернет false
+            // // делаем проверку если !false то блокируем вставку в БД ещё на этапе валидации
+
+            // if ($user !== false) {
+            //     return false;
+            // } 
+            // return true;
+            
+            // Вариант 2: более короткий вариант используя инверсию 
+            // когда данных в бд у нас нет, функция findOne возвращает false
+            // что значит можно вставить эту запись в таблицу, для этого используем инверсию false -> true
+            // в ином случае мы получим массив, если даннные есть
+            // Известно, что массив это true, соотвественно инверсия true -> false
+            return !(db()->findOne($data[0], $value, $data[1]));
+
+        }, 'already exists.');
+
         // указываем папку для языковых файлов, в нашем случае это папка lang в корне проекта
         Validator::langDir(WWW . '/lang');
         // указываем язык валидатору
