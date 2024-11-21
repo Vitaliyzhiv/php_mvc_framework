@@ -35,7 +35,10 @@ class User extends Model
         ],
         'equals' => [
             ['password', 'confirmPassword']
-        ]
+        ],
+        'unique' => [
+            ['email', 'Users,email']
+        ],
     ];
 
     // переводы полей на русский язык
