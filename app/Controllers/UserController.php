@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\User;
+use PHPFramework\Pagination;
 // use Illuminate\Database\Capsule\Manager as Capsule;
 
 class UserController extends BaseController
@@ -51,13 +52,26 @@ class UserController extends BaseController
         response()->redirect('/register');
     }
 
-    // Страница которая возвращает функцию логина
+    // загрузка вида логина
     public function login()
     {
         // возвращаем вид с помощью функции helper view
         return view('user/login', [
             // передаем в вид данные для формы регистрации
             'title' => 'Login page'
+        ]);
+    }
+
+    // загрузка вида страницы users
+    public function index() {
+        // создаем экземпляр класса Pagination  для пагинации
+        $pagination = new Pagination(3, 20);
+        dump($pagination);
+        dump($pagination->getOffset());
+        $users = db()->findAll('users');
+        return view('user/index', [
+            'title' => 'Users',
+            'users' => $users,
         ]);
     }
 }
