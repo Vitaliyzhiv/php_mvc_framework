@@ -63,15 +63,23 @@ class UserController extends BaseController
     }
 
     // загрузка вида страницы users
-    public function index() {
+    public function index()
+    {
+
+        //  считаем количество пользователей в бд
+        $users_cnt = db()->query("select count(*) from users")->getColumn();
+        $limit = PAGINATION_SETTINGS['perPage'];
         // создаем экземпляр класса Pagination  для пагинации
-        $pagination = new Pagination(3, 20);
-        dump($pagination);
-        dump($pagination->getOffset());
-        $users = db()->findAll('users');
+        $pagination = new Pagination($users_cnt);
+
+        $users = db()->query(
+            "select * from  users limit $limit offset {$pagination->getOffset()}"
+        )->get();
+
         return view('user/index', [
             'title' => 'Users',
             'users' => $users,
+            'pagination' => $pagination
         ]);
     }
 }
