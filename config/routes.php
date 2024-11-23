@@ -18,6 +18,7 @@ $app->router->get('/register', [UserController::class, 'register']);
 // получение данных из формы при регистрации
 $app->router->post('/register', [UserController::class, 'store']);
 $app->router->get('/login', [UserController::class, 'login']);
+$app->router->get('/users', [UserController::class, 'index']);
 
 
 
