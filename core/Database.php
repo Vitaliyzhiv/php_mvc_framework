@@ -123,12 +123,14 @@ class Database
      *
      * @param string $tbl The name of the table to query.
      *
-     * @return void Returns nothing.
+     * @return array Returns array of records.
      */
     public function findAll($tbl)
     {
         // создаем запрос на получение всех данных из таблицы
         $this->query("select * from {$tbl}");
+        // возвращаем массив полученных записей 
+        return $this->stmt->fetchAll();
     }
 
     // метод получения одной записи из БД

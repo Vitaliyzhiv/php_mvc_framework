@@ -1,2 +1,6 @@
-[2024-11-20 00:06:36] DB ERROR: . SQLSTATE[HY000] [1045] Access denied for user 'root'@'localhost' (using password: YES)
-[2024-11-20 00:06:37] DB ERROR: . SQLSTATE[HY000] [1045] Access denied for user 'root'@'localhost' (using password: YES)
+[2024-11-20 10:58:54] ERROR: . Division by zero
+[2024-11-20 10:58:56] ERROR: . Division by zero
+File: C:\Xampp\htdocs\php_mvc_framework\app\Controllers\UserController.php, Line: 16, Message: syntax error, unexpected token "return"
+File: C:\Xampp\htdocs\php_mvc_framework\app\Controllers\UserController.php, Line: 14, Message: Division by zero
+File: C:\Xampp\htdocs\php_mvc_framework\app\Controllers\UserController.php, Line: 26, Message: syntax error, unexpected variable "$model"
+File: C:\Xampp\htdocs\php_mvc_framework\core\Database.php, Line: 50, Message: SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry 'fakedata34799@gmail.com' for key 'email'
