@@ -2,6 +2,7 @@
 
 namespace PHPFramework;
 
+// класс Pagination 
 class Pagination
 {
 
