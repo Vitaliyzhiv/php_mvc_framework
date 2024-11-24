@@ -14,10 +14,16 @@ class Application
     public Router $router;
     public View $view;
     public Session $session;
+
+    // экземпляр класса Cache
+    public Cache $cache;
     // экземпляр класса Database
     public Database $db;
 
     public static Application $app;
+
+    // создаем массив контейнер для хранения данных
+    protected array $container = [];
 
     public function __construct()
     {
@@ -33,10 +39,26 @@ class Application
         // $this->setDbConnection();
         // подключение к бд с помощью  нашего класса с бд
         $this->db = new Database();
+        // свойство которое будет хранить в себе обьект класса Cache (инициализация класса Cache)
+        $this->cache = new Cache();
     }
 
     public function run(): void
     {
+        // удаляем кеш страницы при перезагрузке страницы,
+        // пример использования метода remove, который удалит кеш по ключу 
+        // $this->cache->remove('/users');
+        // получаем страницу из кеша
+        // $page = $this->cache->get($this->request->rawUri);
+
+        // // если страница в кеше найдена
+        // if (!$page) {
+        //     //  запрашиваем данные
+        //     $page = $this->router->dispatch();
+        //     // сохраняем страницу в кеше
+        //     $this->cache->set($this->request->rawUri, $page, 60); // 60 секунд  
+        // }
+        // echo $page;
         echo $this->router->dispatch();
     }
 
@@ -44,7 +66,8 @@ class Application
      * Generates a CSRF token and stores it in the session if it does not already exist.
      * This token is used to protect against Cross-Site Request Forgery attacks.
      */
-    public function generateCsrfToken() :void {
+    public function generateCsrfToken(): void
+    {
         // Check if the session does not already have a CSRF token
         if (!session()->has('csrf_token')) {
             // Generate a new CSRF token using a secure random bytes generator
@@ -55,12 +78,13 @@ class Application
         }
     }
 
-    // Пример подключения к бд с помощью библиотеки Laravel Illuminate
-    // public function setDbConnection(){
-    //     $capsule = new Capsule();
-    //     $capsule->addConnection(DB_SETTINGS);
-    //     $capsule->setAsGlobal();
-    //     $capsule->bootEloquent();
-    // }
-}
+    // метод для добавления чего то в контейнер
+    public function set($key, $value) {
+        $this->container[$key] = $value;
+    }
 
+    // метод для получения чего то из контейнера
+    public function get($key, $default = null) {
+        return $this->container[$key] ?? $default;
+    }
+}
