@@ -50,18 +50,37 @@ class Router
 
     public function dispatch(): mixed
     {
+        // Получаем путь из запроса, удаляя строку запроса и очищая лишние символы.
+        // Метод getPath() возвращает путь запроса без параметров GET.
         $path = $this->request->getPath();
+
+        // Пытаемся сопоставить текущий путь с доступными маршрутами.
+        // Если маршрут найден, он возвращается в виде массива.
+        // Если маршрут не найден, возвращается false.
         $route = $this->matchRoute($path);
+
+        // Если маршрут не найден (возвращено false), вызываем функцию abort().
+        // Обычно abort() отправляет HTTP-ответ с кодом ошибки (например, 404 Not Found).
         if (false === $route) {
             abort();
         }
 
+        // Проверяем, является ли "callback" маршрута массивом.
+        // Это используется для вызова методов контроллеров в формате [Контроллер, Метод].
         if (is_array($route['callback'])) {
+            // Если callback — массив, создаем экземпляр класса контроллера.
+            // Это делает первый элемент массива экземпляром класса контроллера,
+            // вместо строки с его именем.
             $route['callback'][0] = new $route['callback'][0];
         }
 
+        // Вызываем callback, связанный с маршрутом.
+        // call_user_func() вызывает функцию или метод, переданный в $route['callback'].
+        // Если callback — замыкание, он вызывается напрямую.
+        // Если callback — массив [Класс, Метод], вызывается указанный метод.
         return call_user_func($route['callback']);
     }
+
 
     protected function matchRoute($path): mixed
     {
@@ -103,17 +122,15 @@ class Router
                             $middlewareInstance = new $middleware;
                             // вызываем метод handle в данного экземпляра класса
                             $middlewareInstance->handle();
-                         }
-
-
+                        }
                     }
                 }
                 if ($route)
-                foreach ($matches as $k => $v) {
-                    if (is_string($k)) {
-                        $this->route_params[$k] = $v;
+                    foreach ($matches as $k => $v) {
+                        if (is_string($k)) {
+                            $this->route_params[$k] = $v;
+                        }
                     }
-                }
                 return $route;
             }
         }
