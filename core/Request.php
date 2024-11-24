@@ -6,14 +6,18 @@ class Request
 {
 
     public string $uri;
+    // добавляем свойсво неочищенного $uri, нужно для того чтобы записывать страницы в файлы кеша
+    public string $rawUri;
 
     /**
      * Constructor.
      *
      * @param string $uri The request URI without the query string.
+     *
      */
     public function __construct($uri)
     {
+        $this->rawUri = $uri;
         $this->uri = trim(urldecode($uri), '/');
     }
 
@@ -109,7 +113,8 @@ class Request
     }
 
     // метод для принятия и обработки данных из glob POST and GET
-    public function getData(): array {
+    public function getData(): array
+    {
         //  заводим пустой массив для сбора данных
         $data = [];
         // проверяем способ получения данных
@@ -125,7 +130,5 @@ class Request
         }
         // возвращаем массив с данными
         return $data;
-
     }
-
 }
