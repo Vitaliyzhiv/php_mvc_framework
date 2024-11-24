@@ -1,0 +1,96 @@
+a:2:{s:4:"data";s:4583:"<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <!-- мета поле для csrf токена -->
+    <meta name="csrf-token" content="cbc9a3e7a7cbe84ff41313d957885af72a1955da7231310a34c8b132ffa394dd" />    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PHP FRAMEWORK :: Register page</title>
+    <link rel="stylesheet" href="http://localhost/assets/bootstrap/css/bootstrap.min.css">
+</head>
+
+<body>
+
+    <nav class="navbar navbar-expand-lg bg-dark mb-3" data-bs-theme="dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Navbar</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <!-- выводим меню из кеша -->
+                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+    <li class="nav-item">
+        <a class="nav-link active" aria-current="page" href="http://localhost/">Home</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link active" aria-current="page" href="http://localhost/dashboard">Dashboard</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link " aria-current="page" href="http://localhost/register">Register</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link " aria-current="page" href="http://localhost/login">Login</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link " aria-current="page" href="http://localhost/users">Users</a>
+    </li>
+</ul>            </div>
+        </div>
+    </nav>
+
+
+        <div class="container">
+
+    <h1>Register page</h1>
+
+    <!-- дамп csrf_token-->
+    
+    <div class="row">
+        <div class="col-md-6 offset-md-3">
+
+            <form action="http://localhost/register" method="post">
+
+                <!-- вызываем функцию helper getCsrfField  для добавления поля csrf_token -->
+                <input type="hidden" name="csrf_token" value="cbc9a3e7a7cbe84ff41313d957885af72a1955da7231310a34c8b132ffa394dd" />                <!-- name -->
+                <div class="mb-3">
+                    <label for="name" class="form-label">Name </label>
+                    <!-- с помощью функции хелпера old сохраняем заполненные значения -->
+                    <input type="text" name="name" class="form-control " value="" id="name" placeholder="name">
+                    <!-- выводим ошибку для поля с помощью helper get_errors -->
+                                    </div>
+                <!-- email -->
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email </label>
+                    <input type="email" name="email" value="" class="form-control " id="email" placeholder="name@example.com">
+                    <!-- выводим ошибку для поля с помощью helper get_errors -->
+                                    </div>
+                <!-- password -->
+                <div class="mb-3">
+                    <label for="password" class="form-label">Password </label>
+                    <input type="password" name="password" class="form-control " id="password" placeholder="Password">
+                                    </div>
+                <!-- password confirm -->
+                <div class="mb-3">
+                    <label for="confirmPassword" class="form-label">Confirm password </label>
+                    <input type="password" name="confirmPassword" class="form-control " id="confirmPassword" placeholder="Confirm password">
+                                    </div>
+                <!-- submit button -->
+                <button type="submit" class="btn btn-warning">Register</button>
+
+            </form>
+
+            <!-- с помощью метода remove класса Session убираем вывод ошибок -->
+                        <!-- с помощью метода remove класса Session убираем вывод данных -->
+                    </div>
+    </div>
+
+</div>
+
+
+    <script src="http://localhost/assets/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+
+</body>
+
+</html>";s:10:"expiration";i:1732420144;}
