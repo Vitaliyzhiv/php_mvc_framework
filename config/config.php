@@ -13,6 +13,7 @@ const LAYOUT = 'default';
 const PATH = 'http://localhost';
 const DEBUG = 1;
 const ERROR_LOGS = ROOT . '/tmp/error.log';
+const CACHE = ROOT . '/tmp/cache';
 
 
 const DB_SETTINGS = [
