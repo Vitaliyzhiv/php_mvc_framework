@@ -32,6 +32,12 @@ function session(): \PHPFramework\Session
     return app()->session;
 }
 
+// функция helper для более простого обращения к инициализованому в классе Application обьекту класса Cache
+
+function cache(): \PHPFramework\Cache
+{
+    return app()->cache;
+}
 
 // записываем в атрибут view пустую строку так как мы хотим одновременно иметь возможность подключать вид  
 // и так же обращаться к экзмемпляру класса View, если вид не был передан
