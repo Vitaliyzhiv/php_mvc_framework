@@ -66,6 +66,11 @@ class UserController extends BaseController
     public function index()
     {
 
+        // проверяем есть ли кеш для страницы
+        // if ($page =  cache()->get(request()->rawUri)) {
+        //     return $page;
+        // }
+        
         //  считаем количество пользователей в бд
         $users_cnt = db()->query("select count(*) from users")->getColumn();
         $limit = PAGINATION_SETTINGS['perPage'];
@@ -75,6 +80,17 @@ class UserController extends BaseController
         $users = db()->query(
             "select * from  users limit $limit offset {$pagination->getOffset()}"
         )->get();
+
+        // // создаем массив page для хранения данных с последуюшей передачой в кеш
+        // $page = view('user/index', [
+        //     'title' => 'Users',
+        //     'users' => $users,
+        //     'pagination' => $pagination
+        // ]);
+
+        // // кешируем страницу
+        // cache()->set(request()->rawUri, $page);
+        // return $page;
 
         return view('user/index', [
             'title' => 'Users',
