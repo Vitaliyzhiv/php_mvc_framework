@@ -9,7 +9,7 @@
     <div class="row">
         <div class="col-md-6 offset-md-3">
 
-            <form action="<?= base_url('/register'); ?>" method="post">
+            <form action="<?= base_url('/register'); ?>" method="post" class="ajax-form">
 
                 <!-- вызываем функцию helper getCsrfField  для добавления поля csrf_token -->
                 <?= get_csrf_field(); ?>
