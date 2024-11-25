@@ -33,12 +33,16 @@ abstract class Model
     public function save(): false|string
     {
 
+        // Refactor: записываем атрибуты в переменную $attibutes
+        // это нужно чтобы мы не очищали данные атрибутов которые находятся
+        // в $this->attributes, так как они могут ещё понадобится  для работы с другими таблицами
+        $attributes = $this->attributes;
         // проходимся циклом по атрибутам 
-        foreach ($this->attributes as $key => $value) {
+        foreach ($attributes as $key => $value) {
             // проверяем существует ли такое поле в $fillable
             if (!in_array($key, $this->fillable)) {
                 // если нет, удаляем его из массива $attributes
-                unset($this->attributes[$key]);
+                unset($attributes[$key]);
             }
         }
         // вставляем данные в таблицу c позиционными аргументами $tbl (f1, f2, f3 ...) values(?,?,?...)
@@ -56,7 +60,7 @@ abstract class Model
         // подготавливаем запрос на сохранение данных в таблицу
         $query = ("insert into {$this->table} ({$fields}) values ({$placeholders})");
         // выполняем запрос
-        db()->query($query, $this->attributes);
+        db()->query($query, $attributes);
         // возвращаем id вставленной записи
         return db()->getInsertId();
     }
@@ -140,9 +144,26 @@ abstract class Model
         }
     }
 
-    // создаем функцию для получения ошибок
+    // создаем метод для получения ошибок
     public function getErrors(): array
     {
         return $this->errors;
+    }
+
+    // метод для формирования списка ошибок
+    public function listErrors(): string {
+        $output = '<ul class="list-unstyled">'; 
+        // проходимся по ошибкам циклом
+        foreach ($this->errors as $field => $errors) {
+            // проходимся по ошибкам в поле циклом
+            foreach ($errors as $error) {
+                // формируем список ошибок
+                $output.= "<li>{$field}: {$error}</li>";
+            }
+        }
+        // закрываем список
+        $output.= '</ul>';
+        // возвращаем список ошибок
+        return $output;
     }
 }
