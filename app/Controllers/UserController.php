@@ -22,10 +22,45 @@ class UserController extends BaseController
     // Функция которая обрабатывает данные формы регистрации
     public function store()
     {
+
+
         // создаем экземпляр класса User, который является моделью
         $model = new User();
         // вызываем метод loadData из класса User
         $model->loadData();
+        //  проверяем является ли способ отправки ассинхронным
+        if (request()->isAjax()) {
+            // выводим json encode
+            if (!$model->validate()) {
+                echo json_encode([
+                    'status' => 'error',
+                    'data' => $model->listErrors(),
+                ]);
+                // останавливаем выполнение скрипта
+                exit();
+            }
+            // хешируем пароль перед вставкой в таблицу
+            $model->attributes['password'] = password_hash($model->attributes['password'], PASSWORD_DEFAULT);
+
+            // Проверяем статус сохранения данных
+            if ($id = $model->save()) {
+                echo json_encode([
+                    'status' => 'success',
+                    'data' => 'Thank you for registration. Your id is ' . $id . '<br>' .
+                    'You will be redirected',
+                    'redirect' => base_url('/login'),
+                ]);
+            } else {
+                echo json_encode([
+                    'status' => 'error',
+                    'data' => 'Error registration',
+                ]);
+            }
+
+            // останавливаем выполнение скрипта
+            exit();
+        }
+
         // проверяем прошла ли успешно валидация формы
         if (!$model->validate()) {
             // записываем по ключу все ошибки с помощью метода класса Session->setFlash
@@ -39,7 +74,7 @@ class UserController extends BaseController
         } else {
             // хешируем пароль перед вставкой в таблицу
             $model->attributes['password'] = password_hash($model->attributes['password'], PASSWORD_DEFAULT);
-            // сохраняем данные с помошью метода save библиотеки Illuminate
+
             // Проверяем статус сохранения данных
             if ($id = $model->save()) {
                 session()->setFlash('success', 'Thank you for registration. Your id is ' . $id);
@@ -58,7 +93,16 @@ class UserController extends BaseController
         // возвращаем вид с помощью функции helper view
         return view('user/login', [
             // передаем в вид данные для формы регистрации
-            'title' => 'Login page'
+            'title' => 'Login page',
+            'styles' => [
+                base_url('/assets/css/test.css'),
+            ],
+            'header_scripts' => [
+                base_url('/assets/js/test.js'),
+            ],
+            'footer_scripts' => [
+                base_url('/assets/js/test2.js'),
+            ],
         ]);
     }
 
@@ -70,7 +114,7 @@ class UserController extends BaseController
         // if ($page =  cache()->get(request()->rawUri)) {
         //     return $page;
         // }
-        
+
         //  считаем количество пользователей в бд
         $users_cnt = db()->query("select count(*) from users")->getColumn();
         $limit = PAGINATION_SETTINGS['perPage'];
