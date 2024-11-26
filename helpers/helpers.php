@@ -69,6 +69,41 @@ function base_url($path = ''): string
     return PATH . $path;
 }
 
+// функция хелпер для получения всех параметров маршрута
+function get_route_params(): array
+{
+    return app()->router->route_params;
+}
+
+// функция хелпер для получения какого параметра маршрута
+function get_route_param($key, $default = ''): string
+{
+    return app()->router->route_params[$key] ?? $default;
+}
+
+// функция для того чтобы проваливаться в двухмерный массив и искать там значения
+function array_value_search($arr, $index, $value): int|null|string
+{
+    foreach ($arr as $k => $v) {
+        // проверяем явлеяется ли значение по индексу внутри вложенного массива равно переданому значению
+        // например:
+        // массив LANG = [
+        // 'ru' => ['name' => 'Russian', 'email' => 'Email'],
+        // 'en' => ['name' => 'English', 'email' => 'Email']
+        // ]
+        //  то в $k - у нас запишется  первый елемент массива 'ru' , 'en' и тд
+        // а в $v будет массив который является значением первого
+        // во вложеном массиве по ключу , который мы передали в индекс проверяем соотвествие
+        // ожидаемому значению 
+        if ($v[$index] == $value) {
+            // возвращаем ключ
+            return $k;
+        }
+    }
+    // возврашаем null если ничего не сработало
+    return null;
+}
+
 // функция хелпер которая будет подключать алерт партс к странице
 function get_alerts(): void
 {
@@ -110,14 +145,15 @@ function get_errors($fieldname): string
 
 // функция helper для получения класса для валидации полей form_errors
 // (source: app/Controllers/UserController.php)
-function get_validation_class($fieldname): string {
+function get_validation_class($fieldname): string
+{
 
     $errors = session()->get('form_errors');
     // чтобы не подсвечивалась пустая стартовая зеленая форма если ошибки отсутсвуют то возвращаем ''
     if (empty($errors)) {
         return '';
     }
-    return isset($errors[$fieldname])? 'is-invalid' : 'is-valid';
+    return isset($errors[$fieldname]) ? 'is-invalid' : 'is-valid';
 }
 
 
@@ -129,7 +165,7 @@ function old($fieldname): string
     // возвращаем данные поля если он существует
     return isset(session()->get('form_data')[$fieldname])
         ? h(session()->get('form_data')[$fieldname])
-    : '';
+        : '';
 }
 
 // функция обертка для htmlspecialchars чтобы использовать более короткое название
@@ -140,7 +176,8 @@ function h($str): string
 }
 
 // функция helper для сокращенного обращения к обьекту db
-function db(): \PHPFramework\Database {
+function db(): \PHPFramework\Database
+{
     return app()->db;
 }
 
@@ -154,7 +191,8 @@ function db(): \PHPFramework\Database {
  * @return string A string containing a hidden HTML form field with the
  *     CSRF token.
  */
-function get_csrf_field() :string {
+function get_csrf_field(): string
+{
     return '<input type="hidden" name="csrf_token" value="' . session()->get('csrf_token') . '" />';
 }
 
@@ -168,11 +206,13 @@ function get_csrf_field() :string {
  *
  * @return string A string containing a meta HTML tag with the CSRF token.
  */
-function get_csrf_meta() :string {
+function get_csrf_meta(): string
+{
     // Retrieve the CSRF token from the session and insert it into a meta tag
     return '<meta name="csrf-token" content="' . session()->get('csrf_token') . '" />';
 }
 
-function check_auth() :bool {
+function check_auth(): bool
+{
     return false;
 }
