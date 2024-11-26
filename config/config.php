@@ -40,3 +40,44 @@ const PAGINATION_SETTINGS = [
     'maxPages' => 7,
     'tpl' => 'pagination/base',
 ];
+
+const MULTILANGS = 1;
+
+const LANGS = [
+    'ru' => [
+        'id' => 1,
+        'code' => 'ru',
+        'title' => 'Русский',
+        'base' => 1,
+    ],
+    'en' => [
+        'id' => 2,
+        'code' => 'en',
+        'title' => 'English',
+        'base' => 0,
+    ],
+    'es' => [
+        'id' => 3,
+        'code' => 'es',
+        'title' => 'Espanol',
+        'base' => 0,
+    ],
+    'fr' => [
+        'id' => 4,
+        'code' => 'fr',
+        'title' => 'Francais',
+        'base' => 0,
+    ],
+    'de' => [
+        'id' => 5,
+        'code' => 'de',
+        'title' => 'Deutsch',
+        'base' => 0,
+    ],
+    'it' => [
+        'id' => 6,
+        'code' => 'it',
+        'title' => 'Italiano',
+        'base' => 0,
+    ]
+];
