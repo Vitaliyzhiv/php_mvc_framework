@@ -12,13 +12,30 @@ const MIDDLEWARE = [
 ];
 
 
-$app->router->get('/', [HomeController::class, 'index']);
+// Специфичный маршрут для панели управления
 $app->router->get('/dashboard', [HomeController::class, 'dashboard'])->middleware(['auth']);
+
+// Маршрут для регистрации
 $app->router->get('/register', [UserController::class, 'register']);
-// получение данных из формы при регистрации
+// Обработка данных из формы регистрации
 $app->router->post('/register', [UserController::class, 'store']);
+
+// Маршрут для входа
 $app->router->get('/login', [UserController::class, 'login']);
+
+// Список пользователей
 $app->router->get('/users', [UserController::class, 'index']);
+
+// Динамический маршрут для поста с параметром "slug"
+// Использует регулярное выражение для захвата сегмента URL
+$app->router->get('/post/(?P<slug>[a-z0-9-]+)', function () {
+    dump(app()->router->route_params);
+    return "Post " . get_route_param('slug2'); // Пример вызова динамического параметра
+});
+
+// Главная страница — более общий маршрут, который подходит практически для любого запроса
+// Должен быть внизу, чтобы не перехватить все запросы, предназначенные для других маршрутов.
+$app->router->get('/', [HomeController::class, 'index']);
 
 
 
