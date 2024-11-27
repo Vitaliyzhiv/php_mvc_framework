@@ -1,5 +1,7 @@
 <?php
 
+use PHPFramework\Language;
+
 /**
  * Returns the application instance
  *
@@ -69,6 +71,15 @@ function base_url($path = ''): string
     return PATH . $path;
 }
 
+function base_href($path = ''): string {
+    // если язык не является базовым пристыковываем код языка к url
+    if (app()->get('lang')['base'] != 1) {
+        return PATH . '/' . app()->get('lang')['code'] . $path;
+    }
+
+    return PATH . $path;
+}
+
 // функция хелпер для получения всех параметров маршрута
 function get_route_params(): array
 {
@@ -102,6 +113,39 @@ function array_value_search($arr, $index, $value): int|null|string
     }
     // возврашаем null если ничего не сработало
     return null;
+}
+
+
+// функция хелпер для  возвращения url адресса без языка
+
+function uri_without_lang(): string
+{
+    // получаем текущий uri (то что идет после базового url);
+    $request_uri =  request()->uri;
+    // разбиваем uri на массив по символу / 
+    // используем лимит 2 так как нас интересует разбивка именно по языку:
+    // с строки en/register/test/something, получим:
+    // ['en', register/test/something].
+    $request_uri = explode('/', $request_uri, 2);
+    // проверяем существует ли текущий язык 
+    if (array_key_exists($request_uri[0], LANGS)) {
+        //  если существует то просто убираем его
+        unset($request_uri[0]);
+    }
+    //  складываем uri обратно без языка
+    $request_uri = implode('/', $request_uri);
+    // если request_uri не пустой то добавляем / к нему, иначе возвращаем пустую строку  
+    return $request_uri ? '/' . $request_uri : '';
+}
+
+// функция хелпер для вывода данных по ключу
+function _e($key) {
+    echo Language::get($key);
+}
+
+// функция хелпер для возвращения данных по ключу
+function __($key): string {
+    return Language::get($key);
 }
 
 // функция хелпер которая будет подключать алерт партс к странице
