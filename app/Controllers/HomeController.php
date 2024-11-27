@@ -8,7 +8,7 @@ class HomeController extends BaseController
     public function index()
     {
         // использование  функции  view из helpers 
-        return view('home', ['title' => 'Home page']);
+        return view('home/index', ['title' => 'Home page']);
         //app()->view->render('test', ['name' => 'Jonh','age' => 30]);  
         
     }
