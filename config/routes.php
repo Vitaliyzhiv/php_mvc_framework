@@ -2,6 +2,7 @@
 
 /** @var \PHPFramework\Application $app */
 
+use App\Controllers\ContactController;
 use App\Controllers\HomeController;
 use App\Controllers\PostController;
 use App\Controllers\UserController;
@@ -34,6 +35,8 @@ $app->router->get('/post/(?P<slug>[a-z0-9-]+)', function () {
     // dump(app()->router->route_params);
     return "Post " . get_route_param('slug2'); // Пример вызова динамического параметра
 });
+
+$app->router->get('/contact', [ContactController::class, 'index']);
 
 // Главная страница — более общий маршрут, который подходит практически для любого запроса
 // Должен быть внизу, чтобы не перехватить все запросы, предназначенные для других маршрутов.
