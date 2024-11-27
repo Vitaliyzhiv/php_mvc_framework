@@ -7,3 +7,5 @@ bootstrap-5.3.3-dist.zip
 /public/lang/*
 !/public/lang/ru.php
 !/public/lang/uk.php
+Framework db2.session.sql
+/.vscode/*
