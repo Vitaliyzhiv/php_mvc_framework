@@ -42,13 +42,14 @@ class UserController extends BaseController
             // хешируем пароль перед вставкой в таблицу
             $model->attributes['password'] = password_hash($model->attributes['password'], PASSWORD_DEFAULT);
 
+            $data = __('user_store_success');
             // Проверяем статус сохранения данных
             if ($id = $model->save()) {
                 echo json_encode([
                     'status' => 'success',
-                    'data' => 'Thank you for registration. Your id is ' . $id . '<br>' .
+                    'data' =>   sprintf($data, $id)  . '<br>' .
                     'You will be redirected',
-                    'redirect' => base_url('/login'),
+                    'redirect' => base_href('/login'),
                 ]);
             } else {
                 echo json_encode([
