@@ -1,6 +1,9 @@
 <?php
 
 use PHPFramework\Language;
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
+use PHPMailer\PHPMailer\Exception;
 
 /**
  * Returns the application instance
@@ -71,7 +74,8 @@ function base_url($path = ''): string
     return PATH . $path;
 }
 
-function base_href($path = ''): string {
+function base_href($path = ''): string
+{
     // если язык не является базовым пристыковываем код языка к url
     if (app()->get('lang')['base'] != 1) {
         return PATH . '/' . app()->get('lang')['code'] . $path;
@@ -139,12 +143,14 @@ function uri_without_lang(): string
 }
 
 // функция хелпер для вывода данных по ключу
-function _e($key) {
+function _e($key)
+{
     echo Language::get($key);
 }
 
 // функция хелпер для возвращения данных по ключу
-function __($key): string {
+function __($key): string
+{
     return Language::get($key);
 }
 
@@ -259,4 +265,47 @@ function get_csrf_meta(): string
 function check_auth(): bool
 {
     return false;
+}
+
+function send_mail(array $to, string $subject, string $tpl, array $data = [], array $attachments = []): bool
+{
+    $mail = new PHPMailer(true);
+
+    try {
+        $mail->SMTPDebug = MAIL_SETTINGS['debug'];
+        $mail->isSMTP();
+        $mail->Host       =  MAIL_SETTINGS['host'];
+        $mail->SMTPAuth   =  MAIL_SETTINGS['auth'];
+        $mail->Username   =  MAIL_SETTINGS['username'];
+        $mail->Password   =  MAIL_SETTINGS['password'];
+        $mail->SMTPSecure =  MAIL_SETTINGS['secure'];
+        $mail->Port       =  MAIL_SETTINGS['port'];
+
+        $mail->setFrom(MAIL_SETTINGS['from_email'], MAIL_SETTINGS['from_name']);
+        // проходимся массивом по адрессам $to
+        foreach ($to as $email) {
+            $mail->addAddress($email);
+        }
+
+        // вложения 
+        if ($attachments) {
+            // перебираем вложения циклом 
+            foreach ($attachments as $attachment) {
+                $mail->addAttachment($attachment); //Add attachments
+            }
+        }
+
+        // Контент
+        $mail->isHTML(MAIL_SETTINGS['is_html']);
+        $mail->CharSet = MAIL_SETTINGS['charset'];
+        $mail->Subject = $subject;
+        // подключаем вид с помощью функции хелпера view()
+        $mail->Body    = view($tpl, $data, false);
+
+
+        return $mail->send();
+    } catch (Exception $e) {
+        error_log("File: {$e->getFile()}, Line: {$e->getLine()}, Message: {$e->getMessage()}\n", 3, ERROR_LOGS);
+        return false;
+    }
 }
