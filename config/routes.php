@@ -3,6 +3,7 @@
 /** @var \PHPFramework\Application $app */
 
 use App\Controllers\HomeController;
+use App\Controllers\PostController;
 use App\Controllers\UserController;
 
 // создаем ассоциативный массив константу middleware для соотношения к какому классу относится конкретный 
@@ -25,11 +26,12 @@ $app->router->get('/login', [UserController::class, 'login']);
 
 // Список пользователей
 $app->router->get('/users', [UserController::class, 'index']);
+$app->router->get('/posts', [PostController::class, 'index']);
 
 // Динамический маршрут для поста с параметром "slug"
 // Использует регулярное выражение для захвата сегмента URL
 $app->router->get('/post/(?P<slug>[a-z0-9-]+)', function () {
-    dump(app()->router->route_params);
+    // dump(app()->router->route_params);
     return "Post " . get_route_param('slug2'); // Пример вызова динамического параметра
 });
 
