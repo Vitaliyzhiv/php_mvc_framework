@@ -56,28 +56,42 @@ const LANGS = [
         'title' => 'English',
         'base' => 0,
     ],
-    'es' => [
-        'id' => 3,
-        'code' => 'es',
-        'title' => 'Espanol',
-        'base' => 0,
-    ],
     'fr' => [
-        'id' => 4,
+        'id' => 3,
         'code' => 'fr',
         'title' => 'Francais',
         'base' => 0,
     ],
-    'de' => [
-        'id' => 5,
-        'code' => 'de',
-        'title' => 'Deutsch',
-        'base' => 0,
-    ],
-    'it' => [
-        'id' => 6,
-        'code' => 'it',
-        'title' => 'Italiano',
-        'base' => 0,
-    ]
+    // 'es' => [
+    //     'id' => 4,
+    //     'code' => 'es',
+    //     'title' => 'Espanol',
+    //     'base' => 0,
+    // ],
+    // 'de' => [
+    //     'id' => 5,
+    //     'code' => 'de',
+    //     'title' => 'Deutsch',
+    //     'base' => 0,
+    // ],
+    // 'it' => [
+    //     'id' => 6,
+    //     'code' => 'it',
+    //     'title' => 'Italiano',
+    //     'base' => 0,
+    // ]
+];
+
+const MAIL_SETTINGS = [
+    'host' => 'sandbox.smtp.mailtrap.io', // smtp.gmail.com  (change to your host)
+    'auth' => true,
+    'username' => '09072ad3e88c15', // your_email@gmail.com (change to your mail username)
+    'password' => '**********2351', // xxxx xxxx xxxx xxxx (change to your password)
+    'secure' => 'tls', // ssl
+    'port' => 587,
+    'from_email' => '247ecd161a-3cb378@inbox.mailtrap.io', // your_email@gmail.com
+    'from_name' => 'My Framework', // имя отправителя
+    'is_html' => true,   // поддержка верстки 
+    'charset' => 'UTF-8',
+    'debug' => 0, // 0 - 4
 ];
